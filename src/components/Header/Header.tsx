@@ -8,8 +8,8 @@ export default function Header() {
         <img
           src={popcorn}
           alt='A popcorn bucket with wide sparkling eyes.'
-          width={100}
-          height={100}
+          width={80}
+          height={90}
         />
         <h1>PopChoice</h1>
       </div>
