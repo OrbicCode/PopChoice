@@ -1,7 +1,18 @@
+#root,
+html {
+  height: 100%;
+}
+
 body {
   font-family: 'Roboto Slab', serif;
+  color: white;
+  margin: 0;
+  height: 100vh;
 }
 
 h1 {
   font-family: 'Carter One', system-ui;
+  font-size: 2.75rem;
+  font-weight: 400;
+  margin-block: 0;
 }
