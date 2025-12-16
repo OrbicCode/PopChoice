@@ -1,7 +1,47 @@
+import { useState } from 'react';
+import styles from './PromptForm.module.css';
+
 export default function PromptForm() {
+  const [combinedString, setCombinedString] = useState('');
+  const [textareaValues, setTextareaValues] = useState({
+    q1: '',
+    q2: '',
+    q3: '',
+  });
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setCombinedString(`${textareaValues.q1}. ${textareaValues.q2}. ${textareaValues.q3}`);
+  }
   return (
-    <form>
-      <h2>I am a Form</h2>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <div>
+        <label>{'What’s your favorite movie and why?'}</label>
+        <textarea
+          onChange={(e) => setTextareaValues({ ...textareaValues, q1: e.target.value })}
+          value={textareaValues.q1}
+          placeholder={
+            'The Shawshank Redemption \nBecause it taught me to never give up hope no matter how hard life gets'
+          }
+        ></textarea>
+      </div>
+      <div>
+        <label>{'Are you in the mood for something new or a classic?'}</label>
+        <textarea
+          onChange={(e) => setTextareaValues({ ...textareaValues, q2: e.target.value })}
+          value={textareaValues.q2}
+          placeholder={'I want to watch movies that were released after 1990'}
+        ></textarea>
+      </div>
+      <div>
+        <label>{'Do you wanna have fun or do you want something serious?'}</label>
+        <textarea
+          onChange={(e) => setTextareaValues({ ...textareaValues, q3: e.target.value })}
+          value={textareaValues.q3}
+          placeholder={'Do you wanna have fun or do you want something serious?'}
+        ></textarea>
+      </div>
+      <button>Let's Go</button>
     </form>
   );
 }
