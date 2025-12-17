@@ -1,17 +1,38 @@
 import { useState } from 'react';
+import { openai, supabase } from '../../lib/config';
 import styles from './PromptForm.module.css';
 
 export default function PromptForm() {
-  const [combinedString, setCombinedString] = useState('');
   const [textareaValues, setTextareaValues] = useState({
     q1: '',
     q2: '',
     q3: '',
   });
 
+  async function createQueryEmbedding(query: string) {
+    const embeddingResponse = await openai.embeddings.create({
+      model: 'text-embedding-ada-002',
+      input: query,
+    });
+    const queryEmbedding = embeddingResponse.data[0].embedding;
+    return queryEmbedding;
+  }
+
+  async function findNearestMatch(queryEmbedding: number[]) {
+    const { data } = await supabase.rpc('match_movies', {
+      query_embedding: queryEmbedding,
+      match_threshold: 0.5,
+      match_count: 3,
+    });
+    return data;
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setCombinedString(`${textareaValues.q1}. ${textareaValues.q2}. ${textareaValues.q3}`);
+    const combinedString = `${textareaValues.q1}. ${textareaValues.q2}. ${textareaValues.q3}`;
+    const queryEmbedding = await createQueryEmbedding(combinedString);
+    const matches = await findNearestMatch(queryEmbedding);
+    console.log(matches);
   }
   return (
     <form onSubmit={handleSubmit} className={styles.form}>
