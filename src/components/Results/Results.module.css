@@ -1,0 +1,27 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  height: calc(100% - 142px);
+  padding: 1em;
+}
+
+.button {
+  font-family: inherit;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #000c36;
+  width: 100%;
+  padding: 0.5em 0;
+  margin-top: auto;
+  margin-bottom: 17px;
+  background: #51e08a;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.button:hover,
+.button:focus {
+  background-color: #51e08aaa;
+}
