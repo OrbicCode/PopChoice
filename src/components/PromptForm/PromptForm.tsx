@@ -2,7 +2,11 @@ import { useState } from 'react';
 import { openai, supabase } from '../../lib/config';
 import styles from './PromptForm.module.css';
 
-export default function PromptForm() {
+interface PromptFormProps {
+  setHasPrompted: (boolean: boolean) => void;
+}
+
+export default function PromptForm({ setHasPrompted }: PromptFormProps) {
   const [textareaValues, setTextareaValues] = useState({
     q1: '',
     q2: '',
@@ -22,13 +26,14 @@ export default function PromptForm() {
     const { data } = await supabase.rpc('match_movies', {
       query_embedding: queryEmbedding,
       match_threshold: 0.5,
-      match_count: 3,
+      match_count: 1,
     });
     return data;
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setHasPrompted(true);
     const combinedString = `${textareaValues.q1}. ${textareaValues.q2}. ${textareaValues.q3}`;
     const queryEmbedding = await createQueryEmbedding(combinedString);
     const matches = await findNearestMatch(queryEmbedding);
